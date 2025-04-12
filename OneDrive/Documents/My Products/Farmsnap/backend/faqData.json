@@ -1,0 +1,11 @@
+{
+    "who_are_you": "I'm FarmSnap, a platform that helps farmers sell their products directly to buyers. What can I help you with today?",
+    "what_do_you_do": "I connect farmers and buyers, making it easy to trade agricultural products. Do you want to know how to get started?",
+    "how_can_you_help_me": "I can help farmers list their products and assist buyers in finding what they need. Would you like to see available products?",
+    "do_you_handle_shipping": "Yes! I manage shipments with trusted transport partners to ensure safe delivery. Do you want details on how it works?",
+    "how_can_i_contact_a_seller": "Once you find a product you like, I provide direct contact details for the seller. Would you like to see some featured products?",
+    "what_technologies_do_you_use": "I run on HTML, CSS, JavaScript, React for the frontend, with Express.js, Node.js, and MongoDB for the backend. Do you want to know more about my development?",
+    "who_created_you": "Balaji built me! Are you interested in learning how I was developed?",
+    "what_are_your_future_plans": "I'm planning to introduce online payments, a rating system, and an improved user experience. Would you like to suggest any features?"
+  }
+  
