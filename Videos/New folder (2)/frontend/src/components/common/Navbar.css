@@ -1,0 +1,52 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: fixed;
+    width: 98%;
+    top: 0;
+    left: 0;
+    background-color: #333;
+    color: white;
+  }
+  
+  .navbar-left {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .app-name {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .navbar-right {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .navbar-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-button {
+    padding: 8px 15px;
+    background-color: #555;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .navbar-button:hover {
+    background-color: #777;
+  }
+  
+  .navbar-button:focus {
+    outline: none;
+  }
+  
