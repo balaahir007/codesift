@@ -1,0 +1,14 @@
+body{
+  padding: 0;
+  margin: 0;
+}
+.nav-fixed{
+  position: fixed;
+  min-width:100%;
+  z-index: 50;
+  top: 0px;
+
+}
+.nav-product{
+  margin-top: 50px;
+}

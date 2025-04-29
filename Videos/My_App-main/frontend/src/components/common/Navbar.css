@@ -1,0 +1,72 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+}
+
+.navbar-left {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.app-name {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.navbar-right {
+  display: flex;
+  gap: 15px;
+}
+
+.navbar-item {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-button {
+  padding: 8px 15px;
+  background-color: #555;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.navbar-button:hover {
+  background-color: #777;
+}
+
+.navbar-button:focus {
+  outline: none;
+}
+
+.cart-btn {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.cart-count {
+  width: 18px;
+  height: 18px;
+  background-color: rgb(0, 255, 98);
+  position: absolute;
+  top: 5px;  
+  right: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: 50%;
+  color: black;
+
+  font-size: 14px;
+  font-weight:bolder;
+}
