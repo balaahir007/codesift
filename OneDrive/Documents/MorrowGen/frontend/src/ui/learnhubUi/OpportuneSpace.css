@@ -1,0 +1,16 @@
+@keyframes scrollBanner {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .auto-scroll {
+    display: flex;
+    width: max-content;
+    animation: scrollBanner 1s linear infinite;
+  }
+  
+  
