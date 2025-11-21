@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
-import useAuthStore from "../../zustand/auth/useAuthStore";
+import useAuthStore from "../zustand/auth/useAuthStore";
+
 const ProtectedRoute = ({ allowedRoles = [], redirectPath = "/login" }) => {
   const { authUser } = useAuthStore();
   console.log("🔍 ProtectedRoute -> authUser:", authUser);

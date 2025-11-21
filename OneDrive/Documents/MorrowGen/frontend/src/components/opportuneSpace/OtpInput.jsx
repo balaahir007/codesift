@@ -1,8 +1,13 @@
 import React, { useRef, useState } from "react";
 
+<<<<<<< HEAD
+const OtpInputBox = ({ mobilenumber }) => {
+  const length = 4;
+=======
 
 
 const OtpInputBox = ({ length=4 }) => {
+>>>>>>> 90c1fdd (fix(auth) add verification to register)
   const [otp, setOtp] = useState(new Array(length).fill(null));
   const inputRefs = useRef([]);
 
