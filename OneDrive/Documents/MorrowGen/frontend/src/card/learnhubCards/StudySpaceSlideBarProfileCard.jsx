@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { IoCloudUploadOutline } from 'react-icons/io5';
 import {
@@ -7,13 +8,23 @@ import {
 } from 'react-icons/md';
 import StudySpaceUploadPanel from '../../components/learnhub/study-space/StudySpaceUploadPanel';
 import useAuthStore from '../../zustand/auth/useAuthStore';
+import useThemeStore from '../../zustand/themeStore';
 
-const StudySpaceSlideBarNewItems = ({onCloseMenu }) => {
-  const [activeMenu, setActiveMenu] = useState(null)
+const StudySpaceSlideBarNewItems = ({ onCloseMenu }) => {
+  const [activeMenu, setActiveMenu] = useState(null);
+  const { mode } = useThemeStore(); // Get theme mode
 
-
-
-
+  // Theme classes
+  const bgCard = mode === 'dark' ? 'bg-[#1B2E31]' : 'bg-white';
+  const bgCardHover = mode === 'dark' ? 'hover:bg-[#0097B2]/10' : 'hover:bg-[#0097B2]/10';
+  const bgIconBg = mode === 'dark' ? 'bg-[#0097B2]/20' : 'bg-[#0097B2]/10';
+  const bgIconHover = mode === 'dark' ? 'group-hover:bg-[#0097B2]/30' : 'group-hover:bg-[#0097B2]/20';
+  const iconColor = 'text-[#0097B2]';
+  const textPrimary = mode === 'dark' ? 'text-gray-100' : 'text-gray-800';
+  const textSecondary = mode === 'dark' ? 'text-gray-400' : 'text-gray-500';
+  const textHover = mode === 'dark' ? 'group-hover:text-[#0097B2]' : 'group-hover:text-[#0097B2]';
+  const borderCard = mode === 'dark' ? 'border-[#294B4E]' : 'border-gray-100';
+  const shadowClass = 'shadow-xl';
 
   const menus = [
     {
@@ -38,42 +49,38 @@ const StudySpaceSlideBarNewItems = ({onCloseMenu }) => {
     },
   ];
 
-
   return (
-    <div className="bg-white shadow-xl rounded-xl p-4 w-72 border border-gray-100">
-
-      {
-        activeMenu && (
-
-          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/20 study-space-panel">
-            <StudySpaceUploadPanel activeMenu={activeMenu} onClose={() => setActiveMenu(false)} />
-          </div>
-        )
-      }
-
+    <div className={`${bgCard} ${shadowClass} rounded-xl p-3 sm:p-4 w-full sm:w-80 border ${borderCard}`}>
+      {activeMenu && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/40 p-4 study-space-panel">
+          <StudySpaceUploadPanel activeMenu={activeMenu} onClose={() => setActiveMenu(null)} />
+        </div>
+      )}
 
       <ul className="space-y-2">
-        {menus.length > 0 && menus.map((menu, index) => (
-          <li
-            key={index}
-            onClick={() => {setActiveMenu(menu.name),onCloseMenu}}
-            className="group flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-secondary/10 hover:shadow-md"
-          >
-            <div className="p-2 bg-secondary/10 rounded-full transition-transform duration-200 group-hover:scale-110 group-hover:bg-secondary/20">
-              {React.cloneElement(menu.icon, {
-                className: 'text-secondary text-[1.5rem]',
-              })}
-            </div>
-            <div className="flex flex-col">
-              <h1 className="font-semibold text-gray-800 group-hover:text-secondary">
-                {menu.name}
-              </h1>
-              <p className="text-sm text-gray-500 group-hover:text-gray-700 transition-colors duration-150">
-                {menu.description}
-              </p>
-            </div>
-          </li>
-        ))}
+        {menus.length > 0 &&
+          menus.map((menu, index) => (
+            <li
+              key={index}
+              onClick={() => { setActiveMenu(menu.name), onCloseMenu }}
+
+              className={`group flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-all duration-200 ${bgCardHover} hover:shadow-md`}
+            >
+              <div className={`p-2 ${bgIconBg} ${bgIconHover} rounded-full transition-transform duration-200 group-hover:scale-110 flex-shrink-0`}>
+                {React.cloneElement(menu.icon, {
+                  className: `${iconColor} text-[1.5rem]`,
+                })}
+              </div>
+              <div className="flex flex-col min-w-0 flex-1">
+                <h1 className={`font-semibold ${textPrimary} ${textHover} transition-colors duration-150 truncate`}>
+                  {menu.name}
+                </h1>
+                <p className={`text-xs sm:text-sm ${textSecondary} group-hover:text-[#0097B2] transition-colors duration-150 line-clamp-2`}>
+                  {menu.description}
+                </p>
+              </div>
+            </li>
+          ))}
       </ul>
     </div>
   );

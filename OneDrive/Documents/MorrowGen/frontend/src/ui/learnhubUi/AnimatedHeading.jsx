@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import useThemeStore from '../../zustand/themeStore';
 
 const AnimatedHeading = () => {
+  const {mode} = useThemeStore()
   const phrases = [
     "Career Journey",
     "Future Today",
@@ -13,6 +15,8 @@ const AnimatedHeading = () => {
   const [currentText, setCurrentText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [typeSpeed, setTypeSpeed] = useState(150);
+
+  const textColor = mode == 'dark' ? 'text-white' : 'text-primary';
 
   useEffect(() => {
     const currentPhrase = phrases[currentPhraseIndex];
@@ -46,7 +50,7 @@ const AnimatedHeading = () => {
   }, [currentText, isDeleting, currentPhraseIndex, typeSpeed, phrases]);
 
   return (
-    <h1 className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
+    <h1 className={`text-5xl md:text-7xl font-black ${textColor} mb-6 leading-tight transition-colors duration-300`}>
       Transform Your
       <span className="bg-gradient-to-r from-[#0097B2] via-[#00B2A9] to-[#0097B2] bg-clip-text text-transparent block relative">
         {currentText}

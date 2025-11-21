@@ -8,18 +8,18 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
 
   const { authUser } = useAuthStore()
-  const navigate = useNavigate()
-  useEffect(() => {
-    if (authUser) {
-      navigate('/learnhub')
-    }
-  }, [authUser])
+  // const navigate = useNavigate()
+  // useEffect(() => {
+  //   if (authUser) {
+  //     navigate('/learnhub')
+  //   }
+  // }, [authUser])
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full bg-backGray">
 
       <div>
-        <div className="pt-6 min-h-screen bg-white darkbg-gray-900 relative overflow-hidden">
+        <div className=" min-h-screen bg-white darkbg-gray-900 relative overflow-hidden">
           {/* Animated background elements matching banner */}
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-20 left-20 w-72 h-72 bg-[#0097B2]/5 rounded-full blur-3xl animate-pulse"></div>
@@ -30,19 +30,19 @@ const Home = () => {
           {/* Grid pattern overlay */}
           <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,.02)_1px,transparent_1px)] darkbg-[linear-gradient(rgba(255,255,255,.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.02)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none"></div>
 
-          <div className="relative px-4 md:px-30">
+          <div className="relative ">
             {/* Banner with proper container */}
-            <div className="  mb-8 overflow-hidden">
+            <div className=" bg-backGray  mb- overflow-hidden">
               <Banner />
             </div>
 
             {/* BookMentership with themed background */}
-            <div className="p-8 md:p-12 mb-8">
+            <div className="bg-backGray">
               <BookMenterShip />
             </div>
 
             {/* Footer with themed background */}
-            <div className=" p-8 md:p-12 mb-8">
+            <div className="bg-backGray mt-0">
               <Footer />
             </div>
           </div>

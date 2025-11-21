@@ -7,40 +7,38 @@ import vapiResumeAssistantConfiguration from "../utils/vapiResumeAssistantConfig
 const FINAL_MESSAGE =
   "That's the end of our interview. Thanks for chatting! Keep building your skills!";
 
-
 const useInterviewEffects = ({
   questions,
   callStatus,
-  interviewData,
+  userName,
+  domainName,
+  startInterview,
   mode,
+  setVapiResumeAssistant,
+  setVapiFormAssistant,
   setCallStatus,
   setAiText,
   setSpeaking,
   candidateAnswers,
+  isInterviewRunning,
 }) => {
-  const isInterviewRunning = useRef(false);
   const speakingTimeout = useRef(null);
-  
-    console.log("config",typeof questions);
 
-  const startInterview = async () => {
-    if (!interviewData || callStatus === "ACTIVE") return;
-    const hasMic = await checkAudioPermission();
-    if (!hasMic) return;
-    let assistantOptions;
+  console.log("config", typeof questions);
+
+  const initInterview = async () => {
     if (mode === "resume") {
-      assistantOptions = vapiResumeAssistantConfiguration(questions);
+      setVapiFormAssistant(
+        vapiResumeAssistantConfiguration(questions, userName)
+      );
     } else {
-      assistantOptions = vapiFormAssistantConfiguration(
-        interviewData,
-        questions
+      setVapiResumeAssistant(
+        vapiFormAssistantConfiguration(domainName, userName, questions)
       );
     }
 
     try {
-      isInterviewRunning.current = true;
-      await vapi.start(assistantOptions);
-      setCallStatus("ACTIVE");
+      startInterview();
     } catch (err) {
       console.error("Error starting vapi:", err);
       setCallStatus("ERROR");
@@ -49,12 +47,9 @@ const useInterviewEffects = ({
   };
 
   useEffect(() => {
-    if (!interviewData || callStatus === "ACTIVE") return;
-    const timeout = setTimeout(() => {
-      startInterview();
-    }, 500);
-    return () => clearTimeout(timeout);
-  }, [interviewData, callStatus]);
+    if (questions?.length === 0 || callStatus === "ACTIVE") return;
+    initInterview();
+  }, [questions, callStatus]);
 
   useEffect(() => {
     const onMessage = (msg) => {

@@ -249,7 +249,7 @@ export default function MeetRoomPage() {
               Retry ({retryCount}/3)
             </button>
             <button
-              onClick={() => navigate(`/learnhub/study-space/${spaceId}`)}
+              onClick={() => navigate(`/study-space/${spaceId}`)}
               className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
             >
               Back to Study Space

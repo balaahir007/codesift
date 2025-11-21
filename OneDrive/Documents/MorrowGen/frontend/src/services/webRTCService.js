@@ -44,7 +44,7 @@ class WebRTCService {
 
   _getPeerOptions() {
     const host = import.meta?.env?.VITE_PEER_HOST || window.location.hostname;
-    const port = Number(import.meta?.env?.VITE_PEER_PORT) || 9002;
+    const port = Number(import.meta?.env?.VITE_PEER_PORT) || 9000;
     const path = import.meta?.env?.VITE_PEER_PATH || '/';
     const secure =
       String(import.meta?.env?.VITE_PEER_SECURE || '') === 'true' ||

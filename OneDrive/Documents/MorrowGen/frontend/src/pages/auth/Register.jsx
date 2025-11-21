@@ -139,7 +139,7 @@ const RegisterForm = () => {
         if (user) {
           if (user.role === "user") navigate("/learnhub");
           else if (user.role === "teacher") navigate("/teacher-dashboard");
-          else if (user.role === "recruiter") navigate("/recruiter-dashboard");
+          else if (user.role === "recruiter") navigate("/recruiter/dashboard");
           else navigate("/");
         }
       }

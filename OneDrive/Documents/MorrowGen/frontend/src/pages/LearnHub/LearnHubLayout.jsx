@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import SlideMenu from '../../components/learnhub/SlideMenu';
 import { Outlet, useLocation } from 'react-router-dom';
+import useThemeStore from '../../zustand/themeStore';
 
 const LearnHubLayout = () => {
   const [extendMenuOptions, setExtendMenuOptions] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const navbarHeight = 24;
+  const navbarHeight = 0;
   const location = useLocation();
 
   // detect course detail page (exclude /learnhub/courses)
@@ -41,18 +42,21 @@ const LearnHubLayout = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, [isInterviewGoing, isCourseDetailPage]);
 
+  const {mode} = useThemeStore()
+
   return (
-    <div className="flex -ml-4 -mt-2 min-h-screen bg-gray-100 pt-16">
+    <div className="flex -ml-4  min-h-screen bg-backGray pt-16">
       {/* ✅ Hide sidebar on course details or mobile */}
         <SlideMenu
         isCourseDetailPage={isCourseDetailPage}
           extendMenuOptions={extendMenuOptions}
           isInterviewGoing={isInterviewGoing}
+          mode={mode}
           setExtendMenuOptions={setExtendMenuOptions}
         />
 
       <div
-        className="w-full transition-all duration-300 -ml-2 px-2"
+        className="w-full relative transition-all duration-300 translate-x-2 md:translate-x-0  "
         style={{
           marginLeft:
             isMobile || isCourseDetailPage
@@ -60,7 +64,7 @@ const LearnHubLayout = () => {
               : extendMenuOptions
               ? 224
               : 64,
-          marginTop: navbarHeight,
+          marginTop: '',
         }}
       >
         <Outlet />

@@ -26,15 +26,12 @@ const StudySpacePosts = () => {
   return (
     <div className="flex flex-col items-center w-full">
       {isLoading ? (
-        <div className="w-full max-w-lg mx-auto space-y-4">
-          {[1, 2, 3].map((_, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200"
-            >
-              <PostCardSkeleton />
-            </div>
-          ))}
+        <div className="w-full max-w-lg mx-auto ">
+          <div
+            className="bg-backgray rounded-lg shadow-sm  hover:shadow-md transition-shadow duration-200"
+          >
+            <PostCardSkeleton />
+          </div>
         </div>
       ) : posts.length === 0 ? (
         <div className="text-center py-12">

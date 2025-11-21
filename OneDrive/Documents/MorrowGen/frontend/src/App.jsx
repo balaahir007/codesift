@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useStudySpacesStore from "./zustand/studySpaces/useStudySpaceStore";
+import useThemeStore from "./zustand/themeStore";
 
 const App = () => {
   const { isCheckingAuth, checkAuth, authUser, checkPremium } = useAuthStore();
@@ -17,12 +18,22 @@ const App = () => {
   const isCreateStudySpace = location.pathname.includes("study-space/create");
   const isStudySpace = location.pathname.includes("study-space");
   const isLearnHubPage = location.pathname.includes("learnhub");
-  const isLoginOrRegisterPage = location.pathname.includes('login') || location.pathname.includes('register');
-  const isTeacherDashboardPage = location.pathname.includes('teacher-dashboard')
-  const isRecruiterDashboardPage = location.pathname.includes('recruiter-dashboard')
+  const isLoginOrRegisterPage = location.pathname.includes('login') || location.pathname.startsWith('/register');
+  const isTeacherDashboardPage = location.pathname.includes('teacher')
+  const isRecruiterDashboardPage = location.pathname.includes('recruiter')
 const  navigate = useNavigate()
-  // Determine if navbar should be shown
   const showNavbar = !isAdminPage && !isStudySpace && !isCreateStudySpace && !isLoginOrRegisterPage && !isTeacherDashboardPage && !isRecruiterDashboardPage;
+
+    const { mode } = useThemeStore();
+
+  useEffect(() => {
+    if (mode === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [mode]);
+
 
   useEffect(() => {
     const initAuth = async () => {
@@ -57,8 +68,7 @@ const  navigate = useNavigate()
       {/* Main Content with proper top spacing */}
       <main className={`
         flex-1 
-        ${showNavbar && !isStudySpace && !isLearnHubPage ? 'pt-16' : 'pt-1'} 
-        ${isAdminPage ? "p-6 bg-gray-50" : "bg-gray-50"}
+        ${showNavbar && !isStudySpace && !isLearnHubPage ? 'pt-16' : 'pt1'} 
       `}>
         <Outlet />
       </main>

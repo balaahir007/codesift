@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useSessionManagementStore from '../../zustand/sessionManagementStore/useSessionManagementStore';
 import { RiCloseLine } from "react-icons/ri";
-import uploadImage from '../../utils/uploadImage';
+import uploadFile from '../../utils/uploadFile';
 import { validateUpdateSessionForm } from '../../utils/validation/validateUpdateSessionForm';
 
 const EditSessionForm = ({ onClose, EditData }) => {
@@ -85,7 +85,7 @@ const handleSubmit = async (e) => {
 
     let finalImageUrl = EditData.imageUrl;
     if (formData.imageUrl instanceof File) {
-        finalImageUrl = await uploadImage(formData.imageUrl);
+        finalImageUrl = await uploadFile(formData.imageUrl);
     } else if (typeof formData.imageUrl === 'string' && formData.imageUrl.startsWith('http')) {
         finalImageUrl = formData.imageUrl;
     }

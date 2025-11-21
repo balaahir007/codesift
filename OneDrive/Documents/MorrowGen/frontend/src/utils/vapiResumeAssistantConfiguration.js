@@ -1,8 +1,8 @@
-const vapiResumeAssistantConfiguration  = (questions, userName = "Balaji") => {    
+const vapiResumeAssistantConfiguration = (questions, userName = "Username") => {
   const questionsCount = questions?.length;
 
-
   const assistantOptions = {
+    assistantId: "25f72ac0-b040-4f30-b463-dc3e192db20a", // ← add this
     name: "AI Resume Recruiter",
     firstMessage: `Hi ${userName}, how are you? Let's dive into your resume-based interview!`,
     transcriber: {
@@ -59,4 +59,5 @@ Key Guidelines:
   };
   return assistantOptions;
 };
-export default vapiResumeAssistantConfiguration ;
+
+export default vapiResumeAssistantConfiguration;

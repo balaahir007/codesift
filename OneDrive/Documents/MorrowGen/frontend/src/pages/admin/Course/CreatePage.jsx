@@ -1,10 +1,11 @@
 import React, { useEffect, useState,useRef } from 'react';
 import { Pencil, Upload, X, Plus, Trash2, Video, GraduationCap, Loader2 } from 'lucide-react';
 import { RiDraggable } from "react-icons/ri";
-import uploadImage from './../../../utils/uploadImage.js'
+import uploadFile from './../../../utils/uploadFile.js'
 import axiosInstance from '../../../utils/axiosInstance';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify'
+import useThemeStore from '../../../zustand/themeStore.js';
 
 const CourseCreatePage = () => {
   const { id } = useParams();
@@ -155,7 +156,7 @@ const CourseCreatePage = () => {
 
     setSavingObj((prev) => ({ ...prev, [fieldName]: true }));
     try {
-      const imageUrl = await uploadImage(file);
+      const imageUrl = await uploadFile(file);
       updateField(fieldName, imageUrl);
       toast.success("File uploaded successfully!");
     } catch (error) {
@@ -203,6 +204,12 @@ const CourseCreatePage = () => {
     }
     setIsModalOpen(true);
   };
+
+  const {mode} = useThemeStore()
+    const textPrimary = mode === 'dark' ? 'text-gray-100' : 'text-gray-800';
+  const textSecondary = mode === 'dark' ? 'text-gray-300' : 'text-gray-600';
+  const textTertiary = mode === 'dark' ? 'text-gray-400' : 'text-gray-500';
+  const cardBg = mode === 'dark' ? 'bg-[#1B2E31]' : 'bg-white';
 
   const closeChapterModal = () => {
     setIsModalOpen(false);
@@ -510,9 +517,9 @@ const EditableField = ({ label, name, value, type = "text", placeholder, textare
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br bg-backGray p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <div className={`${cardBg} ${textPrimary}  rounded-xl shadow-sm p-6 mb-6`}>
           <div className="flex items-center justify-between">
             <div className="flex flex-col gap-y-2">
               <h1 className="text-3xl font-bold text-gray-900">Create New Course</h1>

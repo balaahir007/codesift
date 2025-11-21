@@ -1,5 +1,6 @@
 import { io } from "socket.io-client";
 import useChatStore from "../zustand/studySpaces/useChatStore";
+import useAuthStore from "../zustand/auth/useAuthStore";
 
 class SocketService {
   constructor() {
@@ -19,9 +20,16 @@ class SocketService {
     return this.sockets.get(key);
   }
 
-  connectToSpace(spaceId, userId) {
+  connectToSpace(spaceId, userId,authUser) {
     this.initializeStore();
     const key = `${spaceId}:${userId}`;
+
+    console.log("authUser in socketService", authUser);
+    if (Object.keys(authUser || {}).length === 0) {
+      console.error("❌ Cannot connect socket: User not authenticated");
+      return null;
+    }
+    console.log("authUser in socketService");
 
     if (this.sockets.has(key)) {
       console.log(`🔄 Already connected: ${key}`);
@@ -32,7 +40,11 @@ class SocketService {
 
     const socket = io("http://localhost:5000", {
       withCredentials: true,
-      transports: ["websocket", "polling"],
+      auth: {
+        userId: authUser?.id || null,
+        username: authUser?.username || "guest",
+        email: authUser?.email || null,
+      },
     });
 
     this.sockets.set(key, socket);
@@ -56,7 +68,13 @@ class SocketService {
     });
 
     socket.on("connect_error", (err) => {
-      console.error(`❌ Connection error for space ${spaceId}:`, err.message);
+      console.error(`❌ Connection error for space ${spaceId}:`, {
+        message: err.message,
+        description: err.description,
+        context: err.context,
+        type: err.type,
+        data: err.data,
+      });
       setConnectionStatus(spaceId, { isConnected: false, error: err.message });
     });
 

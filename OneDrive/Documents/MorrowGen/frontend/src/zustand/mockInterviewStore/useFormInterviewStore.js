@@ -22,8 +22,12 @@ const useInterviewStore = create((set, get) => ({
         formData
       );
 
+      console.log("response Data : ", res.data);
+
       const parsedQuestions =
-        typeof res.data === "string" ? JSON.parse(res.data) : res.data;
+        typeof res.data?.questions === "string"
+          ? JSON.parse(res.data)
+          : res.data?.questions;
 
       if (res?.data) {
         set((data) => ({
@@ -33,6 +37,7 @@ const useInterviewStore = create((set, get) => ({
           },
         }));
       }
+      return res?.data?.sessionId;
     } catch (error) {
       throw new Error(
         error?.response?.data?.error ||
@@ -59,11 +64,13 @@ const useInterviewStore = create((set, get) => ({
         "/interview/resumeGenerate-questions",
         formData
       );
-      const parsedQuestions =
-        typeof res.data === "string" ? JSON.parse(res.data) : res.data;
-      console.log("type ", typeof res.data); // This prints 'string'
 
       // should be true
+
+      const parsedQuestions =
+        typeof res.data?.questions === "string"
+          ? JSON.parse(res.data)
+          : res.data?.questions;
 
       if (res?.data) {
         set((data) => ({
@@ -75,6 +82,7 @@ const useInterviewStore = create((set, get) => ({
         console.log("Stored Questions:", get().interviewData.question);
         console.log("Is array?", Array.isArray(get().interviewData.question));
       }
+      return res?.data?.sessionId;
     } catch (error) {
       throw new Error(
         error?.response?.data?.error ||

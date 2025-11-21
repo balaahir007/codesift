@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { validateForm } from '../../utils/validation/sessionFormValidation';
 import useSessionManagementStore from '../../zustand/sessionManagementStore/useSessionManagementStore';
 import { RiCloseLine } from "react-icons/ri";
-import uploadImage from '../../utils/uploadImage';
+import uploadFile from '../../utils/uploadFile';
 
 const SessionForm = ({ onClose }) => {
     const [formData, setFormData] = useState({
@@ -83,7 +83,7 @@ const SessionForm = ({ onClose }) => {
         }
 
         const imageFile = formDataObj.get('imageUrl');
-        const imageUrl = imageFile ? await uploadImage(imageFile) : null;
+        const imageUrl = imageFile ? await uploadFile(imageFile) : null;
 
         setFormData((prev) => ({
             ...prev,

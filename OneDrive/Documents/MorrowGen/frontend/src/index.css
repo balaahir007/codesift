@@ -4,7 +4,7 @@
       --color-primary: #0097B2;
       --color-secondary: #00B2A9;
       --color-teratery: #F2F2F2;
-      --color-backGray: #F2F2F2;
+      --color-backGray: #FFFFFF;
       --color-skeleton: #D9D9D9;
       --color-primary-100: #E0F2F5; 
       --color-primary-200: #B3E0E9; 
@@ -14,11 +14,34 @@
   --primary: #0097B2;
   --secondary: #00B2A9;
   --tertiary: #F2F2F2;
-  --backGray: #F2F2F2;
+  --backGray: #f9f9f9;
   --skeleton: #D9D9D9;
   --primary100: #E0F2F5;
   --primary200: #B3E0E9;
+
+
+  /* Recruiter Bg */
+--elementBg-light: #e6f2f4;
+  --elementBg-dark: #20454b;
+  --elementBg-hover-light: #d4e8eb;
+  --elementBg-hover-dark: #1c3d42;
+  --skeleton-border: #CCCCCC;
+  /*  Teacher UI */
+  
 }
+
+.dark {
+  --primary: #00B2A9;
+  --secondary: #21464C;
+  --tertiary: #1B2E31;
+  --backGray: #102226;
+  --skeleton: #294B4E;
+  --primary100: #2D4F50;
+  --primary200: #3A6467;
+  --text-primary: #FFFFFF;
+  --text-secondary: #B0B0B0;
+}
+
 
 
 
@@ -74,6 +97,42 @@ input::-webkit-outer-spin-button {
   }
 }
 
-.scrollBarHide::-webkit-scrollbar {
+.scrollbar-hidden::-webkit-scrollbar {
   display: none;
+}
+
+/* Hide scrollbar (works on Firefox) */
+.scrollbar-hidden {
+  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and old Edge */
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--elementBg-light);
+  border-radius: 10px;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: var(--elementBg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  transition: background-color 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Optional: smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
 }

@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Eye, Users, Search, Sparkles, TrendingUp, Globe2, BookOpen, Target, ArrowRight, UserPlus } from "lucide-react";
 import axiosInstance from "../../../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
+import useThemeStore from "../../../zustand/themeStore";
 
 const ExploreSpaces = ({ setSection }) => {
     const [publicSpaces, setPublicSpaces] = useState([]);
@@ -14,6 +15,17 @@ const ExploreSpaces = ({ setSection }) => {
     const [joiningSpaceId, setJoiningSpaceId] = useState(null);
 
     const navigate = useNavigate();
+    const { mode } = useThemeStore(); // Get theme mode
+
+    // Theme classes
+    const bgPrimary = mode === 'dark' ? 'bg-[#0A1215]' : 'bg-gradient-to-br from-slate-50 via-blue-50/30 to-teal-50/30';
+    const bgCard = mode === 'dark' ? 'bg-[#1B2E31]/80' : 'bg-white/80';
+    const bgCardLight = mode === 'dark' ? 'bg-[#0F1E20]' : 'bg-slate-50';
+    const textPrimary = mode === 'dark' ? 'text-gray-100' : 'text-slate-900';
+    const textSecondary = mode === 'dark' ? 'text-gray-400' : 'text-slate-600';
+    const borderColor = mode === 'dark' ? 'border-[#294B4E]' : 'border-white/50';
+    const borderColorLight = mode === 'dark' ? 'border-slate-700' : 'border-slate-200';
+    const hoverBg = mode === 'dark' ? 'hover:bg-slate-700' : 'hover:bg-slate-200';
 
     useEffect(() => {
         const getPublicSpaces = async () => {
@@ -73,16 +85,14 @@ const ExploreSpaces = ({ setSection }) => {
         }
 
         try {
-            setJoiningSpaceId(space.id);
-            const response = await axiosInstance.post(
-                `/study-space/requests/${space.id}`,
-                { inviteCode: space.inviteCode }
-            );
+            setJoiningSpaceId(space.inviteCode);
 
-            toast.success("Successfully joined the space!");
-            
-            // Navigate to the study space
-            navigate(`/study-space/${space.id}`);
+            navigate(`/study-space/join/${space.inviteCode}`,{
+                state : {
+                    spaceId : space?.id,
+                    isPublicSpace : true
+                }
+            });
         } catch (error) {
             console.error("Error joining space:", error);
             toast.error(error?.response?.data?.message || "Failed to join space");
@@ -92,11 +102,11 @@ const ExploreSpaces = ({ setSection }) => {
     };
 
     return (
-        <div className="flex-1 relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/30 to-teal-50/30">
+        <div className={`flex-1 relative overflow-hidden ${bgPrimary}`}>
             {/* Animated Background Blobs */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-[#0097B2]/10 to-[#00B2A9]/10 rounded-full blur-3xl animate-pulse"></div>
-                <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-[#00B2A9]/10 to-[#0097B2]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+                <div className={`absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-[#0097B2]/10 to-[#00B2A9]/10 rounded-full blur-3xl animate-pulse ${mode === 'dark' ? 'opacity-30' : 'opacity-100'}`}></div>
+                <div className={`absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-[#00B2A9]/10 to-[#0097B2]/10 rounded-full blur-3xl animate-pulse ${mode === 'dark' ? 'opacity-30' : 'opacity-100'}`} style={{ animationDelay: '1s' }}></div>
             </div>
 
             <div className="relative z-10 p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
@@ -105,11 +115,11 @@ const ExploreSpaces = ({ setSection }) => {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="relative bg-white/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-xl border border-white/50 overflow-hidden"
+                    className={`relative ${bgCard} backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-xl border ${borderColor} overflow-hidden`}
                 >
                     {/* Decorative elements */}
-                    <div className="absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-gradient-to-bl from-[#0097B2]/5 to-transparent rounded-full blur-3xl"></div>
-                    <div className="absolute bottom-0 left-0 w-32 sm:w-48 h-32 sm:h-48 bg-gradient-to-tr from-[#00B2A9]/5 to-transparent rounded-full blur-3xl"></div>
+                    <div className={`absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-gradient-to-bl from-[#0097B2]/5 to-transparent rounded-full blur-3xl ${mode === 'dark' ? 'opacity-20' : 'opacity-100'}`}></div>
+                    <div className={`absolute bottom-0 left-0 w-32 sm:w-48 h-32 sm:h-48 bg-gradient-to-tr from-[#00B2A9]/5 to-transparent rounded-full blur-3xl ${mode === 'dark' ? 'opacity-20' : 'opacity-100'}`}></div>
 
                     <div className="relative z-10">
                         <div className="flex items-center gap-2 mb-2 sm:mb-3">
@@ -121,23 +131,23 @@ const ExploreSpaces = ({ setSection }) => {
                             </span>
                         </div>
 
-                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 bg-clip-text text-transparent">
+                        <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 bg-gradient-to-r ${mode === 'dark' ? 'from-gray-100 via-gray-200 to-gray-300' : 'from-slate-900 via-slate-800 to-slate-700'} bg-clip-text text-transparent`}>
                             Discover Public Study Spaces
                         </h1>
 
-                        <p className="text-slate-600 text-sm sm:text-base lg:text-lg mb-4 sm:mb-6 max-w-2xl">
+                        <p className={`${textSecondary} text-sm sm:text-base lg:text-lg mb-4 sm:mb-6 max-w-2xl`}>
                             Join vibrant learning communities, collaborate with peers worldwide, and achieve your goals together.
                         </p>
 
                         {/* Stats Pills */}
                         <div className="flex flex-wrap gap-2 sm:gap-3">
-                            <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-[#E0F2F5] to-[#B3E0E9] rounded-full">
+                            <div className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 ${mode === 'dark' ? 'bg-[#0F1E20]' : 'bg-gradient-to-r from-[#E0F2F5] to-[#B3E0E9]'} rounded-full`}>
                                 <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-[#0097B2]" />
                                 <span className="text-xs sm:text-sm font-semibold text-[#0097B2]">
                                     {publicSpaces.length} Active Spaces
                                 </span>
                             </div>
-                            <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-[#E0F2F5] to-[#B3E0E9] rounded-full">
+                            <div className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 ${mode === 'dark' ? 'bg-[#0F1E20]' : 'bg-gradient-to-r from-[#E0F2F5] to-[#B3E0E9]'} rounded-full`}>
                                 <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-[#00B2A9]" />
                                 <span className="text-xs sm:text-sm font-semibold text-[#00B2A9]">
                                     Global Community
@@ -152,34 +162,33 @@ const ExploreSpaces = ({ setSection }) => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
-                    className="bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-white/50"
+                    className={`${bgCard} backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border ${borderColor}`}
                 >
                     {/* Search Bar */}
                     <div className="relative mb-3 sm:mb-4">
-                        <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
+                        <Search className={`absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 ${mode === 'dark' ? 'text-gray-500' : 'text-slate-400'}`} />
                         <input
                             type="text"
                             placeholder="Search by name, goal, skills, or tags..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3.5 bg-slate-50 border-2 border-slate-200 rounded-lg sm:rounded-xl text-sm sm:text-base text-slate-900 placeholder-slate-500 focus:outline-none focus:border-[#0097B2] focus:bg-white transition-all"
+                            className={`w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3.5 ${mode === 'dark' ? 'bg-[#0F1E20] border-[#294B4E] text-gray-100 placeholder-gray-500 focus:border-[#0097B2] focus:bg-[#0F1E20]' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500 focus:border-[#0097B2] focus:bg-white'} border-2 rounded-lg sm:rounded-xl text-sm sm:text-base focus:outline-none transition-all`}
                         />
                     </div>
 
                     {/* Domain Filters */}
                     <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
-                        <span className="text-xs sm:text-sm font-medium text-slate-600 whitespace-nowrap mr-1 sm:mr-2">Filters:</span>
+                        <span className={`text-xs sm:text-sm font-medium ${textSecondary} whitespace-nowrap mr-1 sm:mr-2`}>Filters:</span>
                         {domains.map((domain) => (
                             <motion.button
                                 key={domain}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 onClick={() => setSelectedDomain(domain)}
-                                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium whitespace-nowrap transition-all ${
-                                    selectedDomain === domain
+                                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium whitespace-nowrap transition-all ${selectedDomain === domain
                                         ? "bg-gradient-to-r from-[#0097B2] to-[#00B2A9] text-white shadow-lg"
-                                        : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                                }`}
+                                        : mode === 'dark' ? "bg-[#0F1E20] text-gray-300 hover:bg-[#1B2E31]" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                                    }`}
                             >
                                 {domain === "all" ? "All Domains" : domain}
                             </motion.button>
@@ -187,8 +196,8 @@ const ExploreSpaces = ({ setSection }) => {
                     </div>
 
                     {/* Results Count */}
-                    <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-slate-200">
-                        <p className="text-xs sm:text-sm text-slate-600">
+                    <div className={`mt-3 sm:mt-4 pt-3 sm:pt-4 border-t ${borderColorLight}`}>
+                        <p className={`text-xs sm:text-sm ${textSecondary}`}>
                             Showing <span className="font-semibold text-[#0097B2]">{filteredSpaces.length}</span> of{" "}
                             <span className="font-semibold">{publicSpaces.length}</span> spaces
                         </p>
@@ -200,14 +209,14 @@ const ExploreSpaces = ({ setSection }) => {
                     {isLoading ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                             {[...Array(6)].map((_, i) => (
-                                <div key={i} className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-lg animate-pulse overflow-hidden border border-white/50">
-                                    <div className="h-24 sm:h-32 bg-gradient-to-br from-slate-200 to-slate-300"></div>
+                                <div key={i} className={`${bgCard} backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-lg animate-pulse overflow-hidden border ${borderColor}`}>
+                                    <div className={`h-24 sm:h-32 bg-gradient-to-br ${mode === 'dark' ? 'from-[#294B4E] to-[#1B2E31]' : 'from-slate-200 to-slate-300'}`}></div>
                                     <div className="p-4 sm:p-6 space-y-3">
-                                        <div className="h-4 sm:h-5 bg-slate-200 rounded w-3/4"></div>
-                                        <div className="h-3 sm:h-4 bg-slate-200 rounded w-1/2"></div>
+                                        <div className={`h-4 sm:h-5 ${mode === 'dark' ? 'bg-[#294B4E]' : 'bg-slate-200'} rounded w-3/4`}></div>
+                                        <div className={`h-3 sm:h-4 ${mode === 'dark' ? 'bg-[#294B4E]' : 'bg-slate-200'} rounded w-1/2`}></div>
                                         <div className="space-y-2 pt-2">
-                                            <div className="h-3 bg-slate-200 rounded"></div>
-                                            <div className="h-3 bg-slate-200 rounded w-5/6"></div>
+                                            <div className={`h-3 ${mode === 'dark' ? 'bg-[#294B4E]' : 'bg-slate-200'} rounded`}></div>
+                                            <div className={`h-3 ${mode === 'dark' ? 'bg-[#294B4E]' : 'bg-slate-200'} rounded w-5/6`}></div>
                                         </div>
                                     </div>
                                 </div>
@@ -217,13 +226,13 @@ const ExploreSpaces = ({ setSection }) => {
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            className="bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl p-8 sm:p-16 text-center shadow-lg border border-white/50"
+                            className={`${bgCard} backdrop-blur-xl rounded-xl sm:rounded-2xl p-8 sm:p-16 text-center shadow-lg border ${borderColor}`}
                         >
-                            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-slate-100 to-slate-200 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                                <Search className="w-8 h-8 sm:w-10 sm:h-10 text-slate-400" />
+                            <div className={`w-16 h-16 sm:w-20 sm:h-20 ${mode === 'dark' ? 'bg-[#0F1E20]' : 'bg-gradient-to-br from-slate-100 to-slate-200'} rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4`}>
+                                <Search className={`w-8 h-8 sm:w-10 sm:h-10 ${mode === 'dark' ? 'text-gray-600' : 'text-slate-400'}`} />
                             </div>
-                            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2">No Spaces Found</h3>
-                            <p className="text-sm sm:text-base text-slate-600">Try adjusting your search or filters to discover more communities</p>
+                            <h3 className={`text-xl sm:text-2xl font-bold ${textPrimary} mb-2`}>No Spaces Found</h3>
+                            <p className={`text-sm sm:text-base ${textSecondary}`}>Try adjusting your search or filters to discover more communities</p>
                         </motion.div>
                     ) : (
                         <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -235,7 +244,7 @@ const ExploreSpaces = ({ setSection }) => {
                                     transition={{ delay: i * 0.08, duration: 0.4 }}
                                     whileHover={{ y: -8, scale: 1.02 }}
                                     onClick={() => setSection('explore-spaces')}
-                                    className="group bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-white/50 cursor-pointer"
+                                    className={`group ${bgCard} backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border ${borderColor} cursor-pointer`}
                                 >
                                     {/* Header with Gradient */}
                                     <div className="relative h-24 sm:h-32 bg-gradient-to-br from-[#0097B2] to-[#00B2A9] overflow-hidden">
@@ -278,10 +287,10 @@ const ExploreSpaces = ({ setSection }) => {
                                     <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
                                         {/* Title & Domain */}
                                         <div>
-                                            <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-1.5 sm:mb-2 group-hover:text-[#0097B2] transition-colors line-clamp-1">
+                                            <h3 className={`text-lg sm:text-xl font-bold ${textPrimary} mb-1.5 sm:mb-2 group-hover:text-[#0097B2] transition-colors line-clamp-1`}>
                                                 {space.name}
                                             </h3>
-                                            <span className="inline-block px-2.5 sm:px-3 py-0.5 sm:py-1 bg-gradient-to-r from-[#E0F2F5] to-[#B3E0E9] text-[#0097B2] text-xs font-semibold rounded-full capitalize">
+                                            <span className={`inline-block px-2.5 sm:px-3 py-0.5 sm:py-1 ${mode === 'dark' ? 'bg-[#0F1E20] text-[#0097B2]' : 'bg-gradient-to-r from-[#E0F2F5] to-[#B3E0E9] text-[#0097B2]'} text-xs font-semibold rounded-full capitalize`}>
                                                 {space.domain}
                                             </span>
                                         </div>
@@ -290,7 +299,7 @@ const ExploreSpaces = ({ setSection }) => {
                                         {space.goal && (
                                             <div className="flex gap-2">
                                                 <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0097B2] flex-shrink-0 mt-0.5 sm:mt-1" />
-                                                <p className="text-xs sm:text-sm text-slate-600 line-clamp-2">{space.goal}</p>
+                                                <p className={`text-xs sm:text-sm ${textSecondary} line-clamp-2`}>{space.goal}</p>
                                             </div>
                                         )}
 
@@ -298,7 +307,7 @@ const ExploreSpaces = ({ setSection }) => {
                                         {space.techSkills && (
                                             <div className="flex gap-2">
                                                 <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#00B2A9] flex-shrink-0 mt-0.5 sm:mt-1" />
-                                                <p className="text-xs sm:text-sm text-slate-600 line-clamp-2">{space.techSkills}</p>
+                                                <p className={`text-xs sm:text-sm ${textSecondary} line-clamp-2`}>{space.techSkills}</p>
                                             </div>
                                         )}
 
@@ -308,13 +317,13 @@ const ExploreSpaces = ({ setSection }) => {
                                                 {space.tags.slice(0, 3).map((tag, idx) => (
                                                     <span
                                                         key={idx}
-                                                        className="px-2 sm:px-3 py-0.5 sm:py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded-md sm:rounded-lg hover:bg-slate-200 transition-colors"
+                                                        className={`px-2 sm:px-3 py-0.5 sm:py-1 ${mode === 'dark' ? 'bg-[#0F1E20] text-gray-300 hover:bg-[#1B2E31]' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'} text-xs font-medium rounded-md sm:rounded-lg transition-colors`}
                                                     >
                                                         {tag}
                                                     </span>
                                                 ))}
                                                 {space.tags.length > 3 && (
-                                                    <span className="px-2 sm:px-3 py-0.5 sm:py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-md sm:rounded-lg">
+                                                    <span className={`px-2 sm:px-3 py-0.5 sm:py-1 ${mode === 'dark' ? 'bg-[#0F1E20] text-gray-400' : 'bg-slate-100 text-slate-600'} text-xs font-medium rounded-md sm:rounded-lg`}>
                                                         +{space.tags.length - 3}
                                                     </span>
                                                 )}
@@ -322,8 +331,8 @@ const ExploreSpaces = ({ setSection }) => {
                                         )}
 
                                         {/* Footer */}
-                                        <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-slate-200">
-                                            <div className="flex items-center gap-1.5 sm:gap-2 text-slate-600">
+                                        <div className={`flex items-center justify-between pt-3 sm:pt-4 border-t ${borderColorLight}`}>
+                                            <div className="flex items-center gap-1.5 sm:gap-2 text-[#0097B2]">
                                                 <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                                 <span className="text-xs sm:text-sm font-medium">
                                                     {space.members?.length || 0} members

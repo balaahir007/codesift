@@ -4,7 +4,7 @@ import useAuthStore from "../../../zustand/auth/useAuthStore";
 import { studyGroupFormValidation as validateForm } from "../../../utils/validation/studyGroupFormValidation";
 import courseIcon from "../../../assets/learnhub/images/courseIcon.png";
 import { renderCurrentStepInput } from "../../../components/learnhub/groupStudy/renderCurrentStepInput";
-import uploadImage from "../../../utils/uploadImage";
+import uploadFile from "../../../utils/uploadFile";
 import useStudySpacesStore from "../../../zustand/studySpaces/useStudySpaceStore";
 
 const steps = [
@@ -66,7 +66,7 @@ const CreateStudySpacePage = ({ onClose }) => {
 
       let uploadedImageUrl;
       try {
-        uploadedImageUrl = await uploadImage(formData.logo);
+        uploadedImageUrl = await uploadFile(formData.logo);
       } catch {
         setErrors((prev) => ({ ...prev, logo: "Image upload failed." }));
         setIsLoading(false);

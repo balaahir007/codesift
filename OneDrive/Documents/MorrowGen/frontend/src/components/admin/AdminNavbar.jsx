@@ -8,6 +8,7 @@ import { FiAlertCircle, FiBookOpen } from "react-icons/fi";
 import { MdOutlinePayment } from "react-icons/md";
 import { FaCertificate } from "react-icons/fa";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import useThemeStore from '../../zustand/themeStore';
 
 export const notifications = [
   {
@@ -81,10 +82,35 @@ const AdminNavbar = ({ onMenuClick }) => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
+  const {mode} = useThemeStore()
+  // Theme variables
+  const navBg = mode === 'dark' ? 'bg-[#1B2E31]' : 'bg-white';
+  const borderColor = mode === 'dark' ? 'border-gray-700' : 'border-gray-200';
+  const textPrimary = mode === 'dark' ? 'text-gray-100' : 'text-gray-900';
+  const textSecondary = mode === 'dark' ? 'text-gray-400' : 'text-gray-600';
+  const hoverBg = mode === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-primary100';
+  const inputBg = mode === 'dark' ? 'bg-gray-800' : 'bg-white';
+  const inputBorder = mode === 'dark' ? 'border-gray-600' : 'border-gray-200';
+  const inputFocusBorder = mode === 'dark' ? 'focus:border-primary' : 'focus:border-primary';
+  const inputFocusRing = mode === 'dark' ? 'focus:ring-gray-700' : 'focus:ring-primary100';
+  const menuPopupBg = mode === 'dark' ? 'bg-[#1B2E31]' : 'bg-white';
+  const menuBorderColor = mode === 'dark' ? 'border-gray-700' : 'border-gray-200';
+  const menuHeaderBg = mode === 'dark' ? 'bg-gray-800' : 'bg-primary100';
+  const menuItemHoverBg = mode === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-50';
+  const menuItemHoverDanger = mode === 'dark' ? 'hover:bg-red-900/20' : 'hover:bg-red-50';
+  const dividerColor = mode === 'dark' ? 'border-gray-700' : 'border-gray-100';
+  const notificationUnreadBg = mode === 'dark' ? 'bg-primary/20' : 'bg-primary100/20';
+  const footerBg = mode === 'dark' ? 'bg-gray-800' : 'bg-gray-50';
+  const profileIconBg = mode === 'dark' ? 'bg-gray-800' : 'bg-primary100';
+  const profileIconBgLarge = mode === 'dark' ? 'bg-gray-700' : 'bg-primary200';
+  const inputText = mode === 'dark' ? 'text-gray-100' : 'text-gray-900';
+  const placeholderColor = mode === 'dark' ? 'placeholder-gray-500' : 'placeholder-gray-400';
+  const textTertiary = mode === 'dark' ? 'text-gray-500' : 'text-gray-500';
+
   const unreadCount = notifications.filter(n => n.unread).length;
 
   return (
-    <div className='bg-white border-b border-gray-200 px-4 lg:px-6 py-4'>
+    <div className={`${navBg} border-b ${borderColor} lg:px-6 py-4`}>
       <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4'>
         
         {/* Left Section - Search */}
@@ -93,7 +119,7 @@ const AdminNavbar = ({ onMenuClick }) => {
           <div className='md:hidden'>
             <button 
               onClick={onMenuClick}
-              className='p-2 text-gray-600 hover:bg-primary100 rounded-lg transition-colors'
+              className={`p-2 ${textSecondary} ${hoverBg} rounded-lg transition-colors`}
             >
               <HiOutlineMenuAlt3 className='text-xl' />
             </button>
@@ -105,13 +131,13 @@ const AdminNavbar = ({ onMenuClick }) => {
           }`}>
             <input
               type="text"
-              className='w-full pl-11 pr-4 py-2.5 border border-gray-200 outline-none bg-white text-sm rounded-xl focus:border-primary focus:ring-2 focus:ring-primary100 transition-all duration-200'
+              className={`w-full pl-11 pr-4 py-2.5 border ${inputBorder} outline-none ${inputBg} ${inputText} text-sm rounded-xl ${inputFocusBorder} focus:ring-2 ${inputFocusRing} transition-all duration-200 ${placeholderColor}`}
               placeholder='Search users, courses, reports...'
               onFocus={() => setSearchFocused(true)}
               onBlur={() => setSearchFocused(false)}
             />
             <IoSearch className={`absolute top-1/2 left-4 transform -translate-y-1/2 text-lg transition-colors duration-200 ${
-              searchFocused ? 'text-primary' : 'text-gray-400'
+              searchFocused ? 'text-primary' : mode === 'dark' ? 'text-gray-500' : 'text-gray-400'
             }`} />
           </div>
         </div>
@@ -126,7 +152,7 @@ const AdminNavbar = ({ onMenuClick }) => {
                 setNotificationsOpen(!notificationsOpen);
                 setProfileOpen(false);
               }}
-              className='relative p-3 text-gray-600 hover:bg-primary100 rounded-xl transition-all duration-200 group'
+              className={`relative p-3 ${textSecondary} ${hoverBg} rounded-xl transition-all duration-200 group`}
             >
               <IoMdNotificationsOutline className='text-xl group-hover:text-primary transition-colors' />
               {unreadCount > 0 && (
@@ -138,10 +164,10 @@ const AdminNavbar = ({ onMenuClick }) => {
 
             {/* Notifications Dropdown */}
             {notificationsOpen && (
-              <div className='absolute right-0 top-full mt-2 w-96 bg-white border border-gray-200 rounded-xl shadow-xl z-50 overflow-hidden'>
-                <div className="p-4 border-b border-gray-100 bg-primary100">
+              <div className={`absolute right-0 top-full mt-2 w-96 ${menuPopupBg} border ${menuBorderColor} rounded-xl shadow-xl z-50 overflow-hidden`}>
+                <div className={`p-4 border-b ${dividerColor} ${menuHeaderBg}`}>
                   <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-gray-800">Notifications</h3>
+                    <h3 className={`font-semibold ${textPrimary}`}>Notifications</h3>
                     {unreadCount > 0 && (
                       <span className="text-xs bg-primary text-white px-2 py-1 rounded-full">
                         {unreadCount} new
@@ -154,19 +180,19 @@ const AdminNavbar = ({ onMenuClick }) => {
                   {notifications.map((item) => (
                     <div
                       key={item.id}
-                      className={`flex items-start gap-3 p-4 hover:bg-gray-50 cursor-pointer transition-colors border-l-4 ${
-                        item.unread ? 'border-l-primary bg-primary100/20' : 'border-l-transparent'
+                      className={`flex items-start gap-3 p-4 ${menuItemHoverBg} cursor-pointer transition-colors border-l-4 ${
+                        item.unread ? `border-l-primary ${notificationUnreadBg}` : 'border-l-transparent'
                       }`}
                     >
                       <div className="flex-shrink-0 mt-1">
                         {item.icon}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className={`font-medium text-sm ${item.unread ? 'text-gray-900' : 'text-gray-700'}`}>
+                        <p className={`font-medium text-sm ${item.unread ? textPrimary : textSecondary}`}>
                           {item.message}
                         </p>
-                        <p className="text-xs text-gray-500 mt-1">{item.description}</p>
-                        <p className="text-xs text-gray-400 mt-1">{item.time}</p>
+                        <p className={`text-xs ${textTertiary} mt-1`}>{item.description}</p>
+                        <p className={`text-xs ${textSecondary} mt-1`}>{item.time}</p>
                       </div>
                       {item.unread && (
                         <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0 mt-2"></div>
@@ -175,7 +201,7 @@ const AdminNavbar = ({ onMenuClick }) => {
                   ))}
                 </div>
                 
-                <div className="p-3 border-t border-gray-100 bg-gray-50">
+                <div className={`p-3 border-t ${dividerColor} ${footerBg}`}>
                   <button className="w-full text-center text-sm text-primary hover:text-secondary font-medium">
                     View All Notifications
                   </button>
@@ -191,29 +217,29 @@ const AdminNavbar = ({ onMenuClick }) => {
                 setProfileOpen(!profileOpen);
                 setNotificationsOpen(false);
               }}
-              className='flex items-center gap-3 p-2 text-gray-600 hover:bg-primary100 rounded-xl transition-all duration-200 group'
+              className={`flex items-center gap-3 p-2 ${textSecondary} ${hoverBg} rounded-xl transition-all duration-200 group`}
             >
-              <div className="w-8 h-8 bg-primary100 rounded-full flex items-center justify-center">
+              <div className={`w-8 h-8 ${profileIconBg} rounded-full flex items-center justify-center`}>
                 <CgProfile className='text-lg text-primary' />
               </div>
               <div className="hidden md:block text-left">
-                <p className="text-sm font-medium text-gray-900">Admin User</p>
-                <p className="text-xs text-gray-500">Super Admin</p>
+                <p className={`text-sm font-medium ${textPrimary}`}>Admin User</p>
+                <p className={`text-xs ${textTertiary}`}>Super Admin</p>
               </div>
-              <FiMoreVertical className="text-sm text-gray-400 group-hover:text-primary transition-colors" />
+              <FiMoreVertical className={`text-sm ${textSecondary} group-hover:text-primary transition-colors`} />
             </button>
 
             {/* Profile Dropdown */}
             {profileOpen && (
-              <div className='absolute right-0 top-full mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-xl z-50 overflow-hidden'>
-                <div className="p-3 border-b border-gray-100 bg-primary100">
+              <div className={`absolute right-0 top-full mt-2 w-56 ${menuPopupBg} border ${menuBorderColor} rounded-xl shadow-xl z-50 overflow-hidden`}>
+                <div className={`p-3 border-b ${dividerColor} ${menuHeaderBg}`}>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-primary200 rounded-full flex items-center justify-center">
+                    <div className={`w-10 h-10 ${profileIconBgLarge} rounded-full flex items-center justify-center`}>
                       <CgProfile className='text-lg text-primary' />
                     </div>
                     <div>
-                      <p className="font-medium text-sm text-gray-900">Admin User</p>
-                      <p className="text-xs text-gray-500">admin@example.com</p>
+                      <p className={`font-medium text-sm ${textPrimary}`}>Admin User</p>
+                      <p className={`text-xs ${textTertiary}`}>admin@example.com</p>
                     </div>
                   </div>
                 </div>
@@ -223,13 +249,13 @@ const AdminNavbar = ({ onMenuClick }) => {
                     <button
                       key={item.id}
                       onClick={item.onClick}
-                      className={`w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-gray-50 transition-colors ${
-                        item.danger ? 'hover:bg-red-50' : ''
+                      className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${
+                        item.danger ? menuItemHoverDanger : menuItemHoverBg
                       }`}
                     >
                       {item.icon}
                       <span className={`text-sm ${
-                        item.danger ? 'text-red-600 font-medium' : 'text-gray-700'
+                        item.danger ? 'text-red-600 font-medium' : mode === 'dark' ? 'text-gray-300' : 'text-gray-700'
                       }`}>
                         {item.label}
                       </span>

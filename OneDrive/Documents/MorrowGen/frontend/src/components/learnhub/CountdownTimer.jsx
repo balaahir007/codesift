@@ -20,7 +20,7 @@ const CountdownTimer = ({ timer }) => {
   };
 
   return (
-    <div className='flex bg-white p-2 rounded-lg'>
+    <div className='flex  p-2 rounded-lg'>
       {timeLeft > 0 ? formatTime(timeLeft) : "Time's up!"}
     </div>
   );

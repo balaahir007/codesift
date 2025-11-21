@@ -3,7 +3,7 @@ import { BookOpen, Users, Video } from 'lucide-react';
 
 const StudySpaceLoadingSpinner = () => {
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br bg-white">
+    <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br bg-backGray">
       <div className="text-center">
         {/* Main Spinner Container */}
         <div className="relative mb-8">

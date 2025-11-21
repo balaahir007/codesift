@@ -6,6 +6,7 @@ import axiosInstance from '../../utils/axiosInstance';
 import { toast } from 'react-toastify';
 import CourseCertificate from '../../components/learnhub/CourseCertificate';
 import useAuthStore from '../../zustand/auth/useAuthStore';
+import useThemeStore from '../../zustand/themeStore';
 
 const CourseDetails = () => {
   const { courseSlug } = useParams();
@@ -27,6 +28,14 @@ const CourseDetails = () => {
   const [fetchCourseLoading, setFetchCourseLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
+   const { mode } = useThemeStore();
+
+  // Theme variables
+  const textPrimary = mode === 'dark' ? 'text-gray-100' : 'text-gray-800';
+  const textSecondary = mode === 'dark' ? 'text-gray-300' : 'text-gray-600';
+  const textTertiary = mode === 'dark' ? 'text-gray-400' : 'text-gray-500';
+  const cardBg = mode === 'dark' ? 'bg-[#1B2E31]' : 'bg-white';
+
   // Handle window resize
   useEffect(() => {
     const handleResize = () => {
@@ -47,7 +56,7 @@ const CourseDetails = () => {
       setCourseData(res.data.data);
     } catch (error) {
       setCourseData(null);
-      toast.error('Failed to fetch course data');
+      // toast.error('Failed to fetch course data');
     } finally {
       setFetchCourseLoading(false);
     }
@@ -155,17 +164,19 @@ const CourseDetails = () => {
 
       case 'discussions':
         return (
-          <div className="max-w-5xl mx-auto text-center py-12 sm:py-20 px-4">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">Discussions</h1>
-            <div className="bg-white p-6 sm:p-10 rounded-lg shadow-sm inline-block">
-              <p className="text-gray-600 text-base sm:text-lg mb-3">
-                💬 We're currently working on the Discussions feature.
-              </p>
-              <p className="text-gray-500 text-sm">
-                Soon, you'll be able to interact with other learners and share your thoughts here.
-              </p>
-            </div>
-          </div>
+           <div className="max-w-5xl mx-auto text-center py-12 sm:py-20 px-4">
+      <h1 className={`text-2xl sm:text-3xl font-bold ${textPrimary} mb-4`}>
+        Discussions
+      </h1>
+      <div className={`${cardBg} p-6 sm:p-10 rounded-lg shadow-sm inline-block`}>
+        <p className={`${textSecondary} text-base sm:text-lg mb-3`}>
+          💬 We're currently working on the Discussions feature.
+        </p>
+        <p className={`${textTertiary} text-sm`}>
+          Soon, you'll be able to interact with other learners and share your thoughts here.
+        </p>
+      </div>
+    </div>
         );
 
       default:
@@ -185,7 +196,7 @@ const CourseDetails = () => {
   };
 
   return (
-    <div className='flex flex-col md:flex-row'>
+    <div className='flex -ml-4  min-h-screen bg-backGray '>
       <ChapterSlideBar
         openItem={openItem}
         setOpenItem={setOpenItem}
@@ -198,7 +209,7 @@ const CourseDetails = () => {
       />
 
       <div
-        className="flex-1 p-3 sm:p-4 md:p-6 bg-gray-50 min-h-screen transition-all duration-300"
+        className="flex-1 p-3 sm:p-4 md:p-6 min-h-screen transition-all duration-300"
         style={{ marginLeft: getMarginLeft() }}
       >
         {renderSectionContent()}

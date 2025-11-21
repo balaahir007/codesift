@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Users, Globe, Lock, Plus, X, Upload, Target, Code, Tag } from 'lucide-react';
 import useStudySpacesStore from '../../zustand/studySpaces/useStudySpaceStore';
-import uploadImage from '../../utils/uploadImage';
+import uploadFile from '../../utils/uploadFile';
 
 // Mock validation function since the original isn't available
 const validateStudySpaceForm = (formData) => {
@@ -112,7 +112,7 @@ const handleSubmit = async () => {
 
   setIsSubmitting(true);
   try {
-    const uploaded_url = await uploadImage(formData.logo);
+    const uploaded_url = await uploadFile(formData.logo);
     const payload = {
       ...formData,
       logo: uploaded_url,

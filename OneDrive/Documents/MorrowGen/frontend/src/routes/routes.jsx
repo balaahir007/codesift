@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import ProtectedRoute from "../components/ProtectedRoute";
 
 // Auth Pages
 import LoginForm from "../pages/auth/Login";
@@ -68,8 +67,33 @@ import Profile from "../pages/auth/Profile";
 import AdminCoursesPage from "../pages/admin/Course/CoursesPage";
 import LearnHubHome from "../pages/LearnHub/LearnHubHome";
 import ExploreSpaces from "../pages/LearnHub/study-space/ExploreSpaces";
+// import RecruiterDashboard from "../pages/recruiter/RecruiterDashboard";
+import RecruiterHome from "../pages/recruiter/RecruiterHome";
 import RecruiterDashboard from "../pages/recruiter/RecruiterDashboard";
-
+import RecruiterJobs from "../pages/recruiter/RecruiterJobs";
+import RecruiterInternship from "../pages/recruiter/RecruiterInternship";
+import RecruiterCandidaties from "../pages/recruiter/RecruiterCandidaties";
+import RecruiterSettings from "../pages/recruiter/RecruiterSettings";
+import RecruiterHelp from "../pages/recruiter/RecruiterHelp";
+import JobPostPage from "../pages/recruiter/JobPostPage";
+import EditJobsPostPage from "../pages/recruiter/EditJobsPostPage";
+import SelectedJob from "../components/opportuneSpace/jobs/SelectedJob";
+import ApplyPage from "../pages/OpportuneSpace/ApplyPage";
+import TeacherHome from "../pages/teacher/TeacherHome";
+import TeacherStudySpace from "../pages/teacher/TeacherStudySpace";
+import TeacherCreateStudySpacePage from "../pages/teacher/TeacherCreateStudySpacePage";
+import ProtectedRoute from "../components/auth/ProtectedRoute";
+import TeacherStudentsPage from "../pages/teacher/TeacherStudentsPage";
+import CreateHackathonPage from "../pages/teacher/CreateHackathonPage";
+import HackathonsPage from "../pages/teacher/HackathonsPage";
+import SettingsPage from "../pages/LearnHub/SettingsPage";
+import HelpPage from "../pages/LearnHub/HelpPage";
+import HackathonDetailPage from "../pages/OpportuneSpace/HackathonDetailPage";
+import RegisterHackathon from "../pages/OpportuneSpace/RegisterHackathon";
+import JoinHackathon from "../pages/OpportuneSpace/JoinHackathon";
+import MyApplicationsPage from "../pages/OpportuneSpace/MyApplicationsPage";
+import SavedPage from "../pages/OpportuneSpace/SavedPage";
+import HackathonTeamManagement from "../pages/OpportuneSpace/HackathonTeamManagement";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -81,7 +105,15 @@ const router = createBrowserRouter([
       { path: "", element: <Home /> },
       { path: "login", element: <LoginForm /> },
       { path: "register", element: <RegisterForm /> },
+      { path: "profile", element: <Profile /> },
+      { path: "hackathons/:id", element: <HackathonDetailPage /> },
+      { path: "jobs/:jobId?", element: <JobsPage /> },
+      // { path: "jobs/:jobId", element: <SelectedJob /> },
+      { path: "job-listings/:jobId", element: <JobDetails /> },
+      { path: "internships", element: <InternshipPage /> },
+      { path: "hackathons", element: <HackathonPage /> },
 
+      { path: "companies", element: <CompaniesPage /> },
       // ========================================
       // ADMIN ROUTES (Protected)
       // ========================================
@@ -111,7 +143,30 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoute allowedRoles={["teacher"]} />,
         children: [
-          { path: "teacher-dashboard", element: <TeacherSpaceDashboard /> },
+          {
+            path: "teacher", element: <TeacherHome />, children: [
+              {
+                path: 'dashboard', element: <TeacherSpaceDashboard />
+              },
+              {
+                path: 'study-space', element: <TeacherStudySpace />
+              },
+              {
+                path: 'hackathon/post', element: <CreateHackathonPage />
+              },
+              {
+                path: 'hackathon', element: <HackathonsPage />
+              },
+              { path: "study-space/requests/:spaceId", element: <StudySpaceRequests /> },
+
+              {
+                path: 'study-space/post', element: <TeacherCreateStudySpacePage />
+              },
+              {
+                path: 'students', element: <TeacherStudentsPage />
+              },
+            ]
+          },
         ],
       },
 
@@ -121,15 +176,64 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoute allowedRoles={["recruiter"]} />,
         children: [
-          { path: "recruiter-dashboard", element: <RecruiterDashboard /> },
+          {
+            path: "recruiter", element: <RecruiterHome />, children: [
+              {
+                path: "dashboard",
+                element: <RecruiterDashboard />,
+              },
+              {
+                path: "jobs",
+                element: <RecruiterJobs />,
+              },
+              {
+                path: "jobs/post",
+                element: <JobPostPage />,
+              },
+              {
+                path: "jobs/edit/:id", element: <EditJobsPostPage />
+              },
+              {
+                path: "internship",
+                element: <RecruiterInternship />,
+              },
+              {
+                path: "candidaties",
+                element: <RecruiterCandidaties />,
+              },
+              {
+                path: "settings",
+                element: <RecruiterSettings />,
+              },
+              {
+                path: "help",
+                element: <RecruiterHelp />,
+              },
+
+            ]
+          },
         ],
+      },
+      {
+        element: <ProtectedRoute allowedRoles={['user', 'admin']} />,
+        children: [
+          { path: "applications", element: <MyApplicationsPage /> },
+          { path: 'saved', element: <SavedPage /> },
+          // { path: 'team-management', element: <HackathonTeamManagement /> },
+          { path: "hackathons/:idAndSlug/register", element: <RegisterHackathon /> },
+          { path: "hackathons/:idAndSlug/join", element: <JoinHackathon /> },
+          { path: "apply/:jobId?", element: <ApplyPage /> },
+          { path: "settings", element: <SettingsPage /> },
+
+
+        ]
       },
 
       // ========================================
       // USER/STUDENT ROUTES (Protected)
       // ========================================
       {
-        element: <ProtectedRoute allowedRoles={["user"]} />,
+        element: <ProtectedRoute allowedRoles={["user", 'admin']} />,
         children: [
           {
             path: "learnhub",
@@ -140,18 +244,34 @@ const router = createBrowserRouter([
               { path: "courses", element: <CoursePage /> },
               { path: "courses/:courseSlug", element: <CourseDetails /> },
               { path: "courses/:videoId", element: <DisplayCourseVideo /> },
-              { path: "course-generation", element: <CourseGenerationPage /> },
-              { path: "course-generation/:courseId", element: <CourseDisplayComponent /> },
+              // { path: "course-generation", element: <CourseGenerationPage /> },
+              // { path: "course-generation/:courseId", element: <CourseDisplayComponent /> },
               { path: "dashboard", element: <StudentDashboard /> },
               { path: "profile", element: <Profile /> },
+              { path: "settings", element: <SettingsPage /> },
+              { path: "help", element: <HelpPage /> },
               { path: "sessions", element: <SessionPage /> },
               { path: "mentorship", element: <MenterShipPage /> },
               { path: "mock-interview", element: <MockInterviewPage /> },
-              { path: "mock-interview/:interviewName/:action", element: <MockInterviewEntry /> },
+              // Form Based Interview
+              { path: "mock-interview/:interviewType/:domainName/:sessionId/:action", element: <MockInterviewEntry /> },
+              // Resume Based Interview
+              {
+                path: "mock-interview/:interviewType/:sessionId/:action",
+                element: <MockInterviewEntry />,
+              },
             ],
           },
 
-          // Study Space Routes
+
+          // Other User Routes
+          { path: "newInterview", element: <MockInterviewWithOpenSource /> },
+        ],
+      },
+      // Study Space Routes
+      {
+        element: <ProtectedRoute allowedRoles={["user", 'teacher']} />, children: [
+
           { path: "study-space", element: <StudySpaceHome /> },
           { path: "study-space/join/:inviteCode", element: <JoinStudySpace /> },
           {
@@ -171,25 +291,18 @@ const router = createBrowserRouter([
               { path: "meet/:meetId", element: <MeetRoomPage /> },
             ],
           },
-
-          // Other User Routes
-          { path: "newInterview", element: <MockInterviewWithOpenSource /> },
-        ],
-      },
+        ]
+      }
 
       // ========================================
       // OPPORTUNESPACE ROUTES (Accessible to all authenticated users)
       // ========================================
-      {
-        element: <ProtectedRoute allowedRoles={[ "user"]} />,
-        children: [
-          { path: "jobs", element: <JobsPage /> },
-          { path: "job-listings/:jobId", element: <JobDetails /> },
-          { path: "internships", element: <InternshipPage /> },
-          { path: "hackathons", element: <HackathonPage /> },
-          { path: "companies", element: <CompaniesPage /> },
-        ],
-      },
+      // {
+      //   element: <></>,
+      //   children: [
+
+      //   ],
+      // },
     ],
   },
 ]);

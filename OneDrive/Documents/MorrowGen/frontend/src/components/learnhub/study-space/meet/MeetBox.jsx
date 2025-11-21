@@ -35,7 +35,7 @@ const MeetBox = () => {
         position: "fixed",
         top: "70px",
         right: "20px",
-        zIndex: 9999, // Higher z-index to ensure it's always on top
+        zIndex: 99, // Higher z-index to ensure it's always on top
       }}
     >
       {/* Small Icon Button */}
@@ -55,7 +55,7 @@ const MeetBox = () => {
 
       {/* Expanded Content */}
       {isExpanded && (
-        <div className="bg-white rounded-lg shadow-xl border border-gray-200 w-72">
+        <div className="bg-backGray rounded-lg shadow-xl border border-primary w-72">
           {/* Header */}
           <div className="bg-gradient-to-r from-[#0097B2] to-[#00B2A9] text-white px-4 py-3 rounded-t-lg flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -84,7 +84,7 @@ const MeetBox = () => {
                 meetData.map((meet) => (
                   <div
                     key={meet.id}
-                    className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-colors border border-gray-200"
+                    className="bg-backGray rounded-lg p-3 hover:bg-gray-100 transition-colors border border-gray-200"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
@@ -128,7 +128,7 @@ const MeetBox = () => {
             </div>
             
             {/* Footer */}
-            <div className="border-t border-gray-100 px-4 py-2 bg-gray-50 rounded-b-lg">
+            <div className="border-t border-primary px-4 py-2 bg-backGray rounded-b-lg">
               <button className="w-full text-center text-xs text-[#0097B2] hover:text-[#00B2A9] font-medium transition-colors">
                 View All Meetings
               </button>

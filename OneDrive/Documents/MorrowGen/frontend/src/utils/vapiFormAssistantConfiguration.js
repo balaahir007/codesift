@@ -1,7 +1,7 @@
 const vapiFormAssistantConfiguration = (
-  interviewData,
   questions,
-  userName = "Balaji"
+  userName = "username",
+  domainName = "General"
 ) => {
   const questionsArray = Array.isArray(questions) ? questions : [];
   const questionsList = questionsArray
@@ -10,8 +10,9 @@ const vapiFormAssistantConfiguration = (
   const questionsCount = questionsArray.length;
 
   const assistantOptions = {
+    assistantId: "25f72ac0-b040-4f30-b463-dc3e192db20a", // ← add your assistantId
     name: "AI Recruiter",
-    firstMessage: `Hi ${userName}, how are you? Ready for your interview on ${interviewData?.candidateData?.domain}?`,
+    firstMessage: `Hi ${userName}, how are you? Ready for your interview on ${domainName}?`,
     transcriber: {
       provider: "deepgram",
       model: "nova-2",
@@ -32,7 +33,7 @@ const vapiFormAssistantConfiguration = (
 You are an AI voice assistant conducting interviews.
 Your job is to ask candidates the provided interview questions and assess their responses.
 Begin the conversation with a friendly introduction, setting a relaxed yet professional tone. Example:
-"Hey there! Welcome to your ${interviewData?.candidateData?.domain} interview. Let’s get started with a few questions!"
+"Hey there! Welcome to your ${domainName} interview. Let’s get started with a few questions!"
 
 Ask one question at a time and wait for the candidate’s response before proceeding.
 Keep the questions clear and concise.
@@ -52,7 +53,6 @@ After asking all ${questionsCount} questions, wrap up the interview smoothly by 
 "That was great! You handled some tough questions well. Keep sharpening your skills!"
 
 End on a positive note:
-After ${questions?.length} questions, wrap up the interview smoothly by saying:
 "That's the end of our interview. Thanks for chatting! Keep building your skills!"
 
 Key Guidelines:
@@ -66,4 +66,5 @@ Key Guidelines:
   };
   return assistantOptions;
 };
+
 export default vapiFormAssistantConfiguration;
