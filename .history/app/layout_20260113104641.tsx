@@ -11,7 +11,6 @@ import {
   UserButton,
 } from '@clerk/nextjs'
 
-import {dark} from '@clerk/themes'
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -34,11 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider
-    appearance={{
-      theme : dark
-    }}
-    >
+    <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body className={`${inter.variable} ${plexMono.variable} antialiased`}>
           <ThemeProvider
