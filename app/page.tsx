@@ -1,11 +1,27 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import { useMutation, useQuery  } from "convex/react";
+import {api} from '../convex/_generated/api';
+import { Button } from "@/components/ui/button";
+
+export default function X() {
+  const projects = useQuery(api.projects.get)
+  const createProject = useMutation(api.projects.create)
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <div className="bg-white dark:bg-black text-black dark:text-white p-4">
-        Dark mode test
-      </div>
+    <div className="flex   flex-col gap-3 p-4">
+      <Button className="w-fit" onClick={()=>createProject({
+        name : 'New Project'
+      })}>
+        Add New
+      </Button>
+      {
+        projects?.map((project)=>(
+          <div key={project._id} className=' border p-4 text-white'>
+            <p>{project.name}</p>
+            <p>owner id : {project.ownerId}</p>
+          </div>
+        ))
+      }
     </div>
   );
 }
