@@ -36,19 +36,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${plexMono.variable} antialiased`}>
         <Providers>
-          <header>
-            <SignedOut>
-              <SignInButton />
-              <SignUpButton>
-                <button className="bg-blue-500 text-white p-2 rounded">
-                  Sign up
-                </button>
-              </SignUpButton>
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </header>
+        
           {children}
         </Providers>
       </body>
