@@ -24,7 +24,7 @@ const buttonVariants = cva(
 
         outline:
           "border bg-background shadow-sm \
-           hover:bg-accent hover:text-accent-foreground \
+           hover:bg-accent hover:text-white \
            hover:-translate-y-[1px] hover:shadow-md",
 
         secondary:
@@ -32,7 +32,7 @@ const buttonVariants = cva(
            hover:bg-secondary/80 hover:-translate-y-[1px] hover:shadow-md",
 
         ghost:
-          "hover:bg-accent hover:text-accent-foreground \
+          "hover:bg-accent hover:text-white \
            hover:-translate-y-[1px]",
 
         link:
