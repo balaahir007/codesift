@@ -34,6 +34,8 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-white \
            hover:-translate-y-[1px]",
+        highlight:
+          "hover:bg-accent-foreground/5 bg-transparent ",
 
         link:
           "text-primary underline-offset-4 hover:underline",
@@ -46,6 +48,7 @@ const buttonVariants = cva(
         icon: "size-9",
         "icon-sm": "size-8",
         "icon-lg": "size-10",
+        "icon-xs": "size-5.5 rounded",
       },
     },
     defaultVariants: {
