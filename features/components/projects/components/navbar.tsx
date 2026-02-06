@@ -15,7 +15,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Poppins } from "next/font/google";
@@ -38,27 +38,27 @@ export const Navbar = ({ projectId }: { projectId: Id<"projects"> }) => {
   const [isRenaming, setIsRenaming] = React.useState(false);
   const [name, setName] = React.useState("");
 
-  const handleStartRename = ()=>{
-    if(!project) return;
+  const handleStartRename = () => {
+    if (!project) return;
     setName(project?.name || "");
     setIsRenaming(true);
-  }
+  };
 
-  const handleSubmit = ()=>{
+  const handleSubmit = () => {
     setIsRenaming(false);
     const trimmedName = name.trim();
-    if(!trimmedName || trimmedName === project?.name) return;
+    if (!trimmedName || trimmedName === project?.name) return;
 
-    renameProject({id : projectId, name: trimmedName});
-  }
+    renameProject({ id: projectId, name: trimmedName });
+  };
 
-  const handleKeyDown = (e : React.KeyboardEvent)=>{
-    if(e.key === 'Enter'){
-        handleSubmit();
-    }else if(e.key === 'Escape'){
-        setIsRenaming(false);
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    } else if (e.key === "Escape") {
+      setIsRenaming(false);
     }
-  }
+  };
 
   return (
     <nav className=" flex  justify-between items-center gap-x-2 p-2  bg-sidebar border-b">
@@ -91,47 +91,47 @@ export const Navbar = ({ projectId }: { projectId: Id<"projects"> }) => {
             <BreadcrumbSeparator className=" ml-0! mr-1" />
 
             <BreadcrumbItem>
-            {
-              isRenaming ? (
+              {isRenaming ? (
                 <Input
-                 value={name}
-                 autoFocus
-                 onChange={(e)=>setName(e.target.value)}
-
-                 onFocus={(e)=>e.currentTarget.select()}
-                 onBlur={handleSubmit}
-                 onKeyDown={handleKeyDown}
-                 className="text-sm bg-transparent outline-none focus:ring-1 font-medium max-w-40  truncate text-white" 
+                  value={name}
+                  autoFocus
+                  onChange={(e) => setName(e.target.value)}
+                  onFocus={(e) => e.currentTarget.select()}
+                  onBlur={handleSubmit}
+                  onKeyDown={handleKeyDown}
+                  className="text-sm bg-transparent outline-none focus:ring-1 font-medium max-w-40  truncate text-white"
                 />
               ) : (
-
-              <BreadcrumbPage onClick={handleStartRename} className="text-sm cursor-pointer hover:text-white text-white font-medium mx-w-40  truncate">
-                {project?.name ?? "Loading..."}
-              </BreadcrumbPage>
-              )
-            }
+                <BreadcrumbPage
+                  onClick={handleStartRename}
+                  className="text-sm cursor-pointer hover:text-white text-white font-medium mx-w-40  truncate"
+                >
+                  {project?.name ?? "Loading..."}
+                </BreadcrumbPage>
+              )}
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-      {
-        project?.importStatus === 'importing' ? (
+        {project?.importStatus === "importing" ? (
           <Tooltip>
             <TooltipTrigger asChild>
-              <LoaderIcon className="size-4 text-muted-foreground animate-spin"/>
+              <LoaderIcon className="size-4 text-muted-foreground animate-spin" />
             </TooltipTrigger>
             <TooltipContent>Importing...</TooltipContent>
           </Tooltip>
         ) : (
-         
-             <Tooltip>
+          <Tooltip>
             <TooltipTrigger asChild>
-              <CloudCheckIcon className="size-4 text-muted-foreground "/>
+              <CloudCheckIcon className="size-4 text-muted-foreground " />
             </TooltipTrigger>
-            <TooltipContent className="bg-white" >Save {" "} { project?.updatedAt ? formatDistanceToNow(project?.updatedAt,{addSuffix: true}) : 'Loading...'}</TooltipContent>
+            <TooltipContent className="bg-white">
+              Save{" "}
+              {project?.updatedAt
+                ? formatDistanceToNow(project?.updatedAt, { addSuffix: true })
+                : "Loading..."}
+            </TooltipContent>
           </Tooltip>
-         )
-        
-      }
+        )}
       </div>
       <div className="flex items-center gap-2">
         <UserButton />
