@@ -73,8 +73,8 @@ export const Navbar = ({ projectId }: { projectId: Id<"projects"> }) => {
                     className="flex items-center gap-2"
                   >
                     <Image
-                      src="/favicon.ico"
-                      alt="Codesift"
+                       src={"/logo.png"}
+                      alt="CodeSift"
                       width={20}
                       height={20}
                     />
@@ -82,7 +82,7 @@ export const Navbar = ({ projectId }: { projectId: Id<"projects"> }) => {
                     <span
                       className={cn("text-sm font-medium ", font.className)}
                     >
-                      Codesift
+                      CodeSift
                     </span>
                   </Link>
                 </Button>

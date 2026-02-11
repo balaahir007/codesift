@@ -8,11 +8,22 @@ export const useCreateFile = ()=>{
 export const useCreateFolder = ()=>{
     return useMutation(api.files.createFolder)
 }
+export const useUpdateFile = ()=>{
+    return useMutation(api.files.updateFile)
+}
 export const useRenameFile = ()=>{
     return useMutation(api.files.renameFile)
 }
 export const useDeleteFile = ()=>{
     return useMutation(api.files.deleteFile)
+}
+
+export const useFile = (fileId : Id<'files'> | null)=>{
+    return useQuery(api.files.getFile,fileId ? {id : fileId} : 'skip')
+}
+
+export const useFilePath = (fileId : Id<'files'> | null)=>{
+    return useQuery(api.files.getFilePath,fileId ? {id : fileId} : 'skip')
 }
 
 
@@ -26,7 +37,8 @@ export const useFolderContents = ({
     enabled? : boolean
 })=>{
     return useQuery(
-        api.files.getFolderContent,
+        api.files.getFolderContents,
         enabled ? {projectId , parentId} :'skip'
     )
 }
+

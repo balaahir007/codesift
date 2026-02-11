@@ -3,11 +3,9 @@
 import { Id } from "@/convex/_generated/dataModel";
 import { Navbar } from "./navbar";
 import { Allotment } from "allotment";
-
 import "allotment/dist/style.css";
-const MIN_SIDEBAR_WIDTH = 200;
-const MAX_SIDEBAR_WIDTH = 800;
-const DEFAULT_CONVERSATION_SIDEBAR_WIDTH = 400;
+
+const SIDEBAR_WIDTH = 400;
 const DEFAULT_MAIN_SIZE = 1000;
 
 export const ProjectLayout = ({
@@ -18,22 +16,23 @@ export const ProjectLayout = ({
   projectId: Id<"projects">;
 }) => {
   return (
-    <div className="w-full h-screen flex flex-col ">
+    <div className="w-full h-screen flex flex-col">
       <Navbar projectId={projectId} />
-      <div className="flex-1 flex overflow-children">
+
+      <div className="flex-1 overflow-hidden">
         <Allotment
-          className="flex-1"
-          defaultSizes={[DEFAULT_CONVERSATION_SIDEBAR_WIDTH, DEFAULT_MAIN_SIZE]}
+          className="h-full"
+          defaultSizes={[DEFAULT_MAIN_SIZE, SIDEBAR_WIDTH]}
         >
-          <Allotment.Pane
-            snap
-            minSize={MIN_SIDEBAR_WIDTH}
-            maxSize={MAX_SIDEBAR_WIDTH}
-            preferredSize={DEFAULT_CONVERSATION_SIDEBAR_WIDTH}
-          >
-            <div>Conversation sidebar</div>
+          {/* Main content */}
+          <Allotment.Pane>
+            <div className="h-full">{children}</div>
           </Allotment.Pane>
-          <Allotment.Pane>{children}</Allotment.Pane>
+
+          {/* Fixed-width sidebar */}
+          <Allotment.Pane minSize={200} maxSize={400} preferredSize={300}>
+            <div className="h-full border-l">Conversation sidebar</div>
+          </Allotment.Pane>
         </Allotment>
       </div>
     </div>
