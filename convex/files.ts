@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { verifyAuth } from "./auth";
-import { Id } from "./_generated/dataModel";
+import { Doc, Id } from "./_generated/dataModel";
 
 export const getFiles = query({
     args: {
@@ -36,6 +36,8 @@ export const getFile = query({
             throw new Error("File not found")
         }
 
+
+        console.log("files", file)
         const project = await ctx.db.get('projects', file.projectId)
 
         if (!project) {
@@ -49,7 +51,46 @@ export const getFile = query({
     }
 })
 
-export const getFolderContent = query({
+export const getFilePath = query({
+    args: {
+        id: v.id('files'),
+    },
+    handler: async (ctx, args) => {
+        const identity = await verifyAuth(ctx);
+
+
+        const file = await ctx.db.get('files', args.id)
+        if (!file) {
+            throw new Error("File not found")
+
+        }
+        const project = await ctx.db.get('projects', file.projectId)
+        if (!project) {
+            throw new Error("Project not found")
+        }
+
+
+        if (project.ownerId !== identity.subject) {
+            throw new Error("Unauthorized to access this project")
+        }
+        const path: { _id: string, name: string }[] = []
+
+        let currentId: Id<'files'> | undefined = args.id
+
+        while (currentId) {
+            const file = (await ctx.db.get('files', currentId) as Doc<'files'> | undefined)
+            if (!file) break;
+            path.unshift({
+                _id: file._id,
+                name: file.name
+            })
+            currentId = file.parentId
+        }
+
+        return path;
+    }
+})
+export const getFolderContents = query({
     args: {
         projectId: v.id('projects'),
         parentId: v.optional(v.id('files'))
@@ -103,7 +144,7 @@ export const createFile = mutation({
 
         const existing = files.find((file) => file.name == args.name && file.type === 'file')
         if (existing) throw new Error("File already exists")
-        
+
         await ctx.db.insert('files', {
             projectId: args.projectId,
             name: args.name,
@@ -113,8 +154,8 @@ export const createFile = mutation({
             updatedAt: Date.now()
         })
 
-        await ctx.db.patch('projects',args.projectId, {
-            updatedAt : Date.now()
+        await ctx.db.patch('projects', args.projectId, {
+            updatedAt: Date.now()
         })
     }
 })
@@ -150,10 +191,10 @@ export const createFolder = mutation({
             parentId: args.parentId,
             updatedAt: Date.now()
         })
-        
-        
-        await ctx.db.patch('projects',args.projectId, {
-            updatedAt : Date.now()
+
+
+        await ctx.db.patch('projects', args.projectId, {
+            updatedAt: Date.now()
         })
     }
 })
@@ -183,7 +224,7 @@ export const renameFile = mutation({
             q.eq('projectId', file.projectId).eq("parentId", file.parentId)
         ).collect()
 
-        const existing = siblings.find(sibling => sibling.name === args.newName &&  sibling._id !== args.id)
+        const existing = siblings.find(sibling => sibling.name === args.newName && sibling._id !== args.id)
 
         if (existing) {
             throw new Error(`A ${file.type} with name already exixts in this location`)
@@ -193,10 +234,10 @@ export const renameFile = mutation({
             name: args.newName,
             updatedAt: Date.now()
         })
-        
-        
-        await ctx.db.patch('projects',file.projectId, {
-            updatedAt : Date.now()
+
+
+        await ctx.db.patch('projects', file.projectId, {
+            updatedAt: Date.now()
         })
     }
 })
@@ -250,43 +291,44 @@ export const deleteFile = mutation({
 
         await deleteRecursive(args.id)
 
-        
-        await ctx.db.patch('projects',file.projectId, {
-            updatedAt : Date.now()
+
+        await ctx.db.patch('projects', file.projectId, {
+            updatedAt: Date.now()
         })
     }
 })
 export const updateFile = mutation({
-    args: {
-        id: v.id('files'),
-        content: v.string(),
-    },
-    handler: async (ctx,args) => {
-        const identity = await verifyAuth(ctx);
+  args: {
+    id: v.id("files"),
+    content: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await verifyAuth(ctx);
 
-        const file = await ctx.db.get('files', args.id)
-        if (!file) {
-            throw new Error("File not found")
-        }
-        const project = await ctx.db.get('projects', file.projectId)
-        if (!project) {
-            throw new Error("Project not found")
-        }
-
-        if (project.ownerId !== identity.subject) {
-            throw new Error("Unauthorized to access this project")
-        }
-
-
-        const now = Date.now();
-
-        await ctx.db.patch('files',args.id, {
-            updatedAt : now
-        })
-
-        await ctx.db.patch('projects',file.projectId, {
-            updatedAt : now
-        })
+    const file = await ctx.db.get("files", args.id);
+    if (!file) {
+      throw new Error("File not found");
     }
-})
+
+    const project = await ctx.db.get("projects", file.projectId);
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    if (project.ownerId !== identity.subject) {
+      throw new Error("Unauthorized to access this project");
+    }
+
+    const now = Date.now();
+
+    await ctx.db.patch("files", args.id, {
+      content: args.content,
+      updatedAt: now,
+    });
+
+    await ctx.db.patch("projects", file.projectId, {
+      updatedAt: now,
+    });
+  },
+});
 

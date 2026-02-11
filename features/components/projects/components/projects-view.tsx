@@ -48,7 +48,7 @@ function ProjectsView() {
           <div className="flex justify-between gap-4 w-full items-center">
             <div className="flex items-center gap-2 w-full group/logo ">
               <img
-                src={"/vercel.svg"}
+                src={"/logo.png"}
                 alt="Codesift"
                 className="size-[32px] md:size-[46px] "
               />
@@ -58,7 +58,7 @@ function ProjectsView() {
                   font.className,
                 )}
               >
-                Codesift
+                CodeSift
               </h1>
             </div>
           </div>
