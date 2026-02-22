@@ -11,6 +11,7 @@ import {
 
 import { dark } from "@clerk/themes";
 import { Providers } from "@/components/providers";
+import { Toaster } from "sonner";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -39,8 +40,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${plexMono.variable} te antialiased`}>
         <Providers>
-        
           {children}
+        <Toaster/>
         </Providers>
       </body>
     </html>

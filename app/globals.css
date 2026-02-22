@@ -147,7 +147,7 @@
   }
   
   body {
-    @apply bg-background select-none text-white ;
+    @apply bg-background  text-white ;
   }
 }
 
