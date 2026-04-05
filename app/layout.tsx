@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, IBM_Plex_Mono, Inter } from "next/font/google";
 import "./globals.css";
+import "allotment/dist/style.css";
 import {
   SignInButton,
   SignUpButton,
-  SignedIn,
+  SignedIn,   
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+
 
 import { dark } from "@clerk/themes";
 import { Providers } from "@/components/providers";

@@ -10,7 +10,6 @@ import {
     WidgetType,
     keymap
 } from "@codemirror/view"
-import { te } from "date-fns/locale";
 import { fetcher } from "./fetcher";
 
 const setSuggestionEffect = StateEffect.define<string | null>();

@@ -1,4 +1,3 @@
-import { suggestion } from "@/features/editor/extension/suggestion";
 import { createOpenAI } from "@ai-sdk/openai";
 import { auth } from "@clerk/nextjs/server";
 import { generateText, Output } from "ai"

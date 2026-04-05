@@ -11,6 +11,7 @@ import { FaGithub } from "react-icons/fa";
 import ProjectsList from "./projects-list";
 import { useCreateProject } from "../hooks/use-projects";
 import { ProjectsCommandDialog } from "./projects-command-dialog";
+import NewProjectCreate from "./new-project-create";
 const font = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -18,7 +19,8 @@ const font = Poppins({
 function ProjectsView() {
   const createProject = useCreateProject();
   const [commandDialogOpen, setCommandDialogOpen] = React.useState(false);
-
+  const [newProjectOpen, setNewProjectOpen] = React.useState(false);
+  const [projectName, setProjectName] = React.useState("");
   useEffect(() => {
      const handleKeyDown = (e: KeyboardEvent) => {
     if (e.metaKey || e.ctrlKey) {
@@ -43,6 +45,7 @@ function ProjectsView() {
           onOpenChange={setCommandDialogOpen}
         />
       }
+    <NewProjectCreate newProjectOpen={newProjectOpen} setNewProjectOpen={setNewProjectOpen} projectName={projectName} setProjectName={setProjectName} createProject={createProject}/>
       <div className="min-h-screen bg-sidebar  flex flex-col justify-center p-6 md:p-16">
         <div className="w-full max-w-sm mx-auto flex flex-col gap-4 items-center">
           <div className="flex justify-between gap-4 w-full items-center">
@@ -67,11 +70,7 @@ function ProjectsView() {
               <Button
                 variant={"outline"}
                 className="h-full items-center justify-start p-4 bg-background border flex flex-col gap-6 rounded-none"
-                onClick={() => {
-                  createProject({
-                    name: "Prject 2",
-                  });
-                }}
+                onClick={() => setNewProjectOpen(true)}
               >
                 <div className="flex items-center justify-between w-full">
                   <SparkleIcon className="size-4" />

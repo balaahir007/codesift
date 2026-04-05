@@ -6,7 +6,7 @@ import { NextResponse } from "next/server"
 import z from "zod"
 
 const quickEditSchema = z.object({
-    editedCode: z.string().describe("The edited version of the selected code based onthe instruction")
+    editedCode: z.string().describe("The edited version of the selected code based on the instruction")
 })
 
 const URL_REGEX = /https?:\/\/[^\s)>\]]+/g;
@@ -94,7 +94,7 @@ export async function POST(request: Request) {
         })
         return NextResponse.json({editedCode : output.editedCode})
     } catch (error) {
-  console.log("Edit error : ", error)
+        console.log("Edit error : ", error)
         return NextResponse.json(
             { error: "Failed to generate Edit" },
             { status: 400 }
