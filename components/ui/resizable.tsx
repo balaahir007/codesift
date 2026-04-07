@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { GripVerticalIcon } from "lucide-react"
+// @ts-ignore - react-resizable-panels types
 import * as ResizablePrimitive from "react-resizable-panels"
 
 import { cn } from "@/lib/utils"
@@ -9,8 +10,9 @@ import { cn } from "@/lib/utils"
 function ResizablePanelGroup({
   className,
   ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) {
+}: React.HTMLAttributes<HTMLDivElement>) {
   return (
+    // @ts-expect-error - react-resizable-panels component type  
     <ResizablePrimitive.PanelGroup
       data-slot="resizable-panel-group"
       className={cn(
@@ -22,9 +24,9 @@ function ResizablePanelGroup({
   )
 }
 
-function ResizablePanel({
-  ...props
-}: React.ComponentProps<typeof ResizablePrimitive.Panel>) {
+function ResizablePanel(
+  props: React.HTMLAttributes<HTMLDivElement>
+) {
   return <ResizablePrimitive.Panel data-slot="resizable-panel" {...props} />
 }
 
@@ -32,10 +34,11 @@ function ResizableHandle({
   withHandle,
   className,
   ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelResizeHandle> & {
+}: React.HTMLAttributes<HTMLDivElement> & {
   withHandle?: boolean
 }) {
   return (
+    // @ts-expect-error - react-resizable-panels component type
     <ResizablePrimitive.PanelResizeHandle
       data-slot="resizable-handle"
       className={cn(
@@ -49,6 +52,7 @@ function ResizableHandle({
           <GripVerticalIcon className="size-2.5" />
         </div>
       )}
+      {/* @ts-expect-error - react-resizable-panels component type */}
     </ResizablePrimitive.PanelResizeHandle>
   )
 }

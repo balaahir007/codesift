@@ -14,9 +14,9 @@ export const showQuickEditEffect = StateEffect.define<boolean | null>();
 let editorView: EditorView | null = null;
 let currentAbortController: AbortController | null = null;
 
-export const quickEditState = StateField.define<string | null>({
+export const quickEditState = StateField.define<boolean | null>({
     create() {
-        return "TODO"
+        return null;
     },
     update(value, transaction) {
         for (const effect of transaction.effects) {
